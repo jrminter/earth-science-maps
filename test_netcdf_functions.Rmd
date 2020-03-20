@@ -1,0 +1,119 @@
+---
+title: "Test NetCDF access"
+author: "John Minter"
+output:
+  knitr:::html_vignette:
+    css: inc/jm-gray-vignette.css
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,
+  comment = NA,
+  fig.align = "centre",
+  fig.height = 4,
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE)
+```
+
+# Objective
+
+To open and subset netcdf documents in R.
+
+# Some resources
+
+- [University of Oregon Geog-490 netCDF](http://geog.uoregon.edu/bartlein/courses/geog490/week04-netCDF.html) How to use netCDF in R.
+
+# Load packages
+
+```{r loadKeyPackages}
+library(oce)
+library(ncdf4)
+library(ocedata)
+library(here)
+# data("coastlineWorld")
+```
+
+# Open a netCDF file
+
+```{r open_netcdf_file}
+# set path and filename
+data_file <- paste0(here(), '/data/netcdf/19920816120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+print(data_file)
+ncin <- nc_open(data_file)
+
+print(ncin)
+
+dname <- "analysed_sst"  # data name...
+```
+
+# Get latitude and longitude
+
+```{r get_lon}
+# get longitude and latitude
+lon <- ncvar_get(ncin,"lon")
+nlon <- dim(lon)
+head(lon)
+tail(lon)
+```
+
+```{r get_lat}
+lat <- ncvar_get(ncin,"lat")
+nlat <- dim(lat)
+head(lat)
+tail(lat)
+```
+
+```{r printLatLon}
+print(c(nlon,nlat))
+```
+
+Get the `time` variable and its attributes using the `ncvar_get()` and `ncatt_get()` functions, and list them, and also get the number of time steps using the `dim()` function.
+
+```{r getTime}
+# get time
+time <- ncvar_get(ncin,"time")
+time
+```
+
+```{r getTimeUnits}
+tunits <- ncatt_get(ncin,"time","units")
+nt <- dim(time)
+nt
+```
+
+Print the time units string. Note the structure of the time units attribute. The object tunits has two components hasatt (a logical variable), and tunits$value, the actual "time since" string.
+
+```{r printTimeUnits}
+tunits
+```
+
+# Get a variable
+
+Get the the temperature variable (tmp) and its attributes, and verify the size of the array.
+
+```{r getTemperature}
+# get temperature'
+tmp_array <- ncvar_get(ncin,dname)
+tmp_array <- tmp_array -  272.15 # convert to celcius
+dlname <- ncatt_get(ncin,dname,"long_name")
+dunits <- ncatt_get(ncin,dname,"units")
+fillvalue <- ncatt_get(ncin,dname,"_FillValue")
+print(dim(tmp_array))
+print(min(tmp_array))
+print(max(tmp_array))
+```
+
+```{r plot_tmp_array}
+pal = oce.colorsTemperature()
+zlim = range(tmp_array, na.rm=TRUE)
+c = colormap(tmp_array, breaks=100, zclip=T, col=pal, zlim=zlim)
+
+# define unit label
+lab = 'Optimum interpolation SST [deg C]'
+plot(tmp_array)
+
+```
+

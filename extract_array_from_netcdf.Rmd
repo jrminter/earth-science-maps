@@ -1,0 +1,67 @@
+---
+title: "Extract Array from Netcdf"
+author: "John Minter"
+output:
+  knitr:::html_vignette:
+    css: inc/jm-gray-vignette.css
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Objective
+
+Test the approach from [Mark Payne](https://rpubs.com/markpayne/358146).
+
+# Load Packages
+
+Explicitly load all packages
+
+```{r loadPackages}
+library(sp)
+library(raster)
+library(ncdf4)
+library(here)
+```
+
+# Setup a raster brick
+
+Mark Payne explains:
+
+> The raster package has three basic types of data structures:
+>
+> - a “raster” for two dimensional data (e.g. lat-lon data)
+>
+> - a “brick”, which is for three dimensional data (e.g. lon-lon-time)
+>   where the data is in a single file
+>
+> - a “stack”, which is also three dimensional, but where the data is spread
+>   across multiple files (e.g. where you have one NetCDF file per month)
+>
+> Raster can also support higher dimensional data, up to around four dimensions,
+> and can interface to high dimensionality data by focussing on one aspect of it
+> at a time.
+>
+> In this case we want a `brick`, which we create as follows:
+
+
+```{r setupRasterBrick}
+fname <- paste0(here(), '/data/netcdf/19990908120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+
+SST.b <- brick(fname)  
+```
+
+Let's see what this brick contains:
+
+```{r showBrickContents}
+SST.b
+```
+
+So from this we can see that we have a 1x1 degree resolution grid, that runs from -180 to +180 in the longtitudinal direction, from -90 to 90 in the latitudinal i.e. it’s global. The time steps are stored as “Date” and run from 1870-01-16 to 2017-12-16. We have have a look at the contents using plot
+
+```{r plotBrick}
+plot(SST.b[[1]])
+```

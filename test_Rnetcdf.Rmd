@@ -1,0 +1,46 @@
+---
+title: "Test NetCDF access with tidync"
+author: "John Minter"
+output:
+  knitr:::html_vignette:
+    css: inc/jm-gray-vignette.css
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,
+  comment = NA,
+  fig.align = "centre",
+  fig.height = 4,
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE)
+```
+
+```{r loadKeyPackages}
+# library(oce)
+library(RNetCDF)
+# library(ocedata)
+library(here)
+# data("coastlineWorld")
+```
+
+# Objective
+
+To open and subset netcdf documents in R.
+
+# Some resources
+
+- [netcdf with tidync](https://cran.r-project.org/web/packages/tidync/vignettes/netcdf-with-tidync.html).
+
+# Open a netCDF file
+
+```{r open_netcdf_file}
+library(RNetCDF)
+data_file <- paste0(here(), '/data/netcdf/19920816120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+print(data_file)
+print.nc(open.nc(data_file))
+```
+
+

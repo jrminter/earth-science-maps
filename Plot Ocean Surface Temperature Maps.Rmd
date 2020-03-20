@@ -1,0 +1,118 @@
+---
+title: "Plot Ocean Surface Temperature Maps"
+author: "John Minter"
+output:
+  knitr:::html_vignette:
+    css: inc/jm-gray-vignette.css
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Objective
+
+Our objective is to use R and RStudio to plot ocean surface temperature maps
+for a high school Earth Science class.
+
+# Key references
+
+- [Data Source](https://podaac.jpl.nasa.gov/dataset/CMC0.2deg-CMC-L4-GLOB-v2.0?ids=&values=&search=Sea%20Surface%20Temperature&temporalSearch=1992-08-17T04:00:00.000ZTO1992-08-31T04:00:00.000Z)
+
+
+
+Happily,
+[Hansen Johnsen](https://hansenjohnson.org/post/sst-in-r/) has figured out
+how to do this. First, let's load the packages we need.
+
+```{r loadPackages}
+library(testthat) # required for oce
+library(gsw) # required for oce
+library(oce)
+library(ncdf4)
+library(ocedata)
+library(here)
+data("coastlineWorld")
+```
+
+# Plot Coastline
+
+
+```{r plot-coastline}
+# convert the date
+
+
+# data_file <- paste0(here(), '/data/netcdf/19920816120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+
+data_file <- paste0(here(), '/data/netcdf/19990908120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+
+#data_file <- paste0(here(), '/data/netcdf/20040905120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+# data_file <- paste0(here(), '/data/netcdf/20050823120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
+
+
+print(data_file)
+nc   = nc_open(data_file)
+lat  = ncvar_get(nc, "lat")
+lon  = ncvar_get(nc, "lon")
+time = ncvar_get(nc, "time")
+sst  = ncvar_get(nc, "analysed_sst")
+# close the netcdf file
+nc_close(nc)
+
+# convert time stamp
+time = as.POSIXct(time, origin='1981-01-01 00:00:', tz='UCT')
+
+# convert units to celcius
+sst = sst - 272.15
+
+print(dim(sst))
+
+# setup the layout for plotting
+
+m = rbind(
+  c(1,1,1,1,1,1,1,1,1,1,1,2),
+  c(1,1,1,1,1,1,1,1,1,1,1,2),
+  c(1,1,1,1,1,1,1,1,1,1,1,2),
+  c(1,1,1,1,1,1,1,1,1,1,1,2),
+  c(1,1,1,1,1,1,1,1,1,1,1,2)
+)
+
+layout(m)
+
+# configure for printing
+
+pal = oce.colorsTemperature()
+zlim = range(sst, na.rm=TRUE)
+c = colormap(sst, breaks=100, zclip=T, col=pal, zlim=zlim)
+
+# define unit label
+lab = 'Optimum interpolation SST [deg C]'
+
+# plot basemap
+plot(coastlineWorld, col=`grey`,
+projection="+proj=eck3",
+longitude=range(lon),
+latitude=range(lat))
+
+# add sst layer
+mapImage(lon,lat,sst, col=oceColorsTemperature)
+
+# overlay coastline again
+mapPolygon(coastlineWorld, col='grey')
+
+# add variable label
+# mtext(paste0(lab), side=3, line=0, adj-0, cex=0.7)
+
+# add title
+title(paste0(time))
+
+# add color pallette
+drawPalette(c$zlim, col=c$col, breaks=c$breaks, zlab='', fullpage='T')
+
+
+  
+
+```
