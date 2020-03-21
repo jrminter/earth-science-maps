@@ -63,5 +63,5 @@ SST.b
 So from this we can see that we have a 1x1 degree resolution grid, that runs from -180 to +180 in the longtitudinal direction, from -90 to 90 in the latitudinal i.e. it’s global. The time steps are stored as “Date” and run from 1870-01-16 to 2017-12-16. We have have a look at the contents using plot
 
 ```{r plotBrick}
-plot(SST.b[[1]])
+plot(SST.b[[1]]/10)
 ```
