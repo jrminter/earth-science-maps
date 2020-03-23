@@ -1,0 +1,5 @@
+
+https://scitools.org.uk/cartopy/docs/latest/installing.html#installing
+
+conda install -c conda-forge cartopy
+
