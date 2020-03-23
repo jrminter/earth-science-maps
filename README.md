@@ -21,6 +21,23 @@ The [processNC](https://rdrr.io/github/RS-eco/processNC/f/README.md) package may
 
 [Stackoverflow](https://stackoverflow.com/questions/21280104/how-to-take-a-subset-from-a-netcdf-file-using-latitude-longitude-boundaries-in-r) has a decent example.
 
+# More references
+
+- [NWS Environmental Center](https://polar.ncep.noaa.gov/global/examples/usingpython.shtml)
+
+- [Cartopy](https://scitools.org.uk/cartopy/docs/latest/index.html)
+
+- [Matplotlib Base map plotting examples](https://matplotlib.org/basemap/users/examples.html)
+
+- [Matplotlib basemap tookit](https://matplotlib.org/basemap/api/basemap_api.html)
+
+- [Python datetime examples](https://docs.python.org/3/library/datetime.html)
+
+- [Optimmum Interpolation Sea Surface Temperature (OISST)](https://www.ncdc.noaa.gov/oisst)
+
+- [AMS - Daily High-Resolution-Blended Analyses for Sea Surface Temperature](https://journals.ametsoc.org/doi/10.1175/2007JCLI1824.1)
+
+
 
 
 
