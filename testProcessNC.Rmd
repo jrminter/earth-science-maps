@@ -1,0 +1,38 @@
+---
+title: "test_ProcessNC"
+author: "John Minter"
+output:
+  knitr:::html_vignette:
+    css: inc/jm-gray-vignette.css
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment=NA)
+```
+
+# Add Libraries
+
+```{r loadLibraries}
+library(processNC)
+library(raster)
+```
+# Get files
+
+```{r getFiles}
+files <- list.files(paste0(system.file(package="processNC"), "/extdata"), pattern=".nc", full.names=T)
+files
+```
+
+# Subset Files
+
+```{r subsetFiles}
+# subsetNC(file[1], ext=c(8.5, 14, 47, 51), startdate)
+maps <- subsetNC(files, ext=c(8.5, 14, 47, 51),
+                 startdate=1990, enddate=1999)
+plot(maps[[1]]/10)
+```
+
+
+

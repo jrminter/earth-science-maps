@@ -37,6 +37,8 @@ The [processNC](https://rdrr.io/github/RS-eco/processNC/f/README.md) package may
 
 - [AMS - Daily High-Resolution-Blended Analyses for Sea Surface Temperature](https://journals.ametsoc.org/doi/10.1175/2007JCLI1824.1)
 
+- [get a subset from netcdf in r](https://stackoverflow.com/questions/21280104/how-to-take-a-subset-from-a-netcdf-file-using-latitude-longitude-boundaries-in-r)
+
 
 
 
