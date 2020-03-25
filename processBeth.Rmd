@@ -40,7 +40,7 @@ print(dim(arr))
 ```
 
 ```{r cropNatrix}
-arr_crop <- arr[350:675, 1275:1700]
+arr_crop <- as.matrix(arr[350:675, 1275:1700])
 
 print(dim(arr_crop))
 ```
@@ -51,5 +51,5 @@ print(dim(arr_crop))
 # maps <- subsetNC(pa, ext=c( long=-105, long=-20,lat= 20, 450))
 # maps <- subsetNC(pa, ext=c(8.5, 14, 47, 51),
 #               startdate=1990, enddate=1999)
-arr_crop
+plot(arr_crop)
 ```

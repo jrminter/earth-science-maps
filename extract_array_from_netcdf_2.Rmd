@@ -33,22 +33,25 @@ library(here)
 fname <- paste0(here(), '/data/netcdf/19990908120000-CMC-L4_GHRSST-SSTfnd-CMC0.2deg-GLOB-v02.0-fv02.0.nc')
 
 ncFile <- nc_open(fname)
+LonIdx <- which( ncFile$dim$lon$vals > 355 | ncFile$dim$lon$vals < 10)
+LatIdx <- which( ncFile$dim$lat$vals > 34.5 & ncFile$dim$lat$vals < 44.5)
+# yVariable <- ncvar_get( ncFile, varName)[ LonIdx, LatIdx]
+nc_close(ncFile)
 
 ```
 
 Let's see what this raster contains:
 
 ```{r showRasterContents}
-roi <- arr()
 
 ```
 
 So from this we can see that we have a 0.2x0.2 degree resolution grid, that runs from -180 to +180 in the longtitudinal direction, from -90 to 90 in the latitudinal i.e. it’s global. We have have a look at the contents using plot
 
 ```{r plotRaster1}
-plot(SST.r)
+# plot(SST.r)
 ```
 
 ```{r plotRaster2}
-plot(SST.r/10.0)
+# plot(SST.r/10.0)
 ```
