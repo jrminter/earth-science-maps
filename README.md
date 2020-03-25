@@ -51,6 +51,23 @@ The [processNC](https://rdrr.io/github/RS-eco/processNC/f/README.md) package may
 > of the latitudes. You can also use the CDO command "invertlat" to sort that
 > out for you. (edited Jan 17 '18 at 9:27)
 
+Also
+
+> Cut a regional window using cdo sellonlatbox
+> 
+> posted Feb 20, 2013, 1:57 AM by gibies george
+cdo sellonlatbox,LON1,LON2,LAT1,LAT2 INAME ONAME
+> 
+> to cut an area deﬁned by
+>
+> – LON1 and LON2 are the lower and upper longitude of your window
+>
+> – LAT1 and LAT2 the lower and upper latitiude of your window
+> 
+> – INAME is your input ﬁlename
+> 
+> – OUTPUT is your output ﬁlename
+
 
 
 
