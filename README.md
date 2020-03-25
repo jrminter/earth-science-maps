@@ -40,6 +40,17 @@ The [processNC](https://rdrr.io/github/RS-eco/processNC/f/README.md) package may
 - [get a subset from netcdf in r](https://stackoverflow.com/questions/21280104/how-to-take-a-subset-from-a-netcdf-file-using-latitude-longitude-boundaries-in-r)
 
 
+ - From [here](https://stackoverflow.com/questions/21280104/how-to-take-a-subset-from-a-netcdf-file-using-latitude-longitude-boundaries-in-r)
+
+> You can also use CDO to extract the area from the bash command line first and
+> then read the file in R:
+> 
+> `cdo sellonlatbox,-5,12,34.5,44.5 in.nc out.nc`
+>
+> I note in the above discussion that there was a problem concerning the order
+> of the latitudes. You can also use the CDO command "invertlat" to sort that
+> out for you. (edited Jan 17 '18 at 9:27)
+
 
 
 
