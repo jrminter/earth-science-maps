@@ -1,5 +1,5 @@
 ---
-title: "test_ProcessNC"
+title: "Process Beth's Cropped Maps"
 author: "John Minter"
 output:
   knitr:::html_vignette:
@@ -17,10 +17,11 @@ knitr::opts_chunk$set(echo = TRUE, comment=NA)
 ```{r loadLibraries, message=FALSE}
 library(processNC)
 library(raster)
+library(rgdal)
 library(here)
 ```
 
-# Get files
+# Get the cropped files
 
 ```{r getFile}
 pa <- paste0(here(), "/data/netcdf/19990908_cr.nc")
@@ -31,20 +32,12 @@ print(pa)
 SST <- raster(pa)
 SST
 ```
-
-# Subset Files
-
-```{r makeOrigMatrix}
-# arr <- as.matrix(SST)
-# print(dim(arr))
-```
-
+# Make the plot
 
 ```{r plotMap}
-# arr_crop <- arr[1275:1700, 350:675]
-# maps <- subsetNC(SST, ext=c(latitude=c(-45, -20), longitude=c(-105, -20)))
-# maps <- subsetNC(pa, ext=c( long=-105, long=-20,lat= 20, 450))
-# maps <- subsetNC(pa, ext=c(8.5, 14, 47, 51),
-#               startdate=1990, enddate=1999)
-plot(SST/10.0)
+# for some reason we need to divide temperature by 10...
+# see https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/image
+# image(SST/10.0)
+plot(SST/10.0, main="SST", xlab = "Latitude", 
+     ylab = "Longitude")
 ```
