@@ -42,4 +42,5 @@ vignettes/*.pdf
 *.html
 
 # don't track pdf file
-Intro-to-Raster-in-R.pdf
+Intro-to-Raster-Data-in-R.pdf
+Intro-to-Raster-Data-in-R-pdf.pdf
