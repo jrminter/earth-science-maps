@@ -1,0 +1,149 @@
+---
+title: "Intro to Raster Data in R"
+author: "Data Carpentry"
+date: "Started 2020-03-26"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment=NA)
+```
+This document originated at [datacarpentry.org](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html).
+
+# Introduction
+
+## Questions
+
+- What is a raster dataset?
+
+- How do I work with and plot raster data in R?
+
+- How can I handle missing or bad data values for a raster?
+
+## Objectives
+
+- Describe the fundamental attributes of a raster dataset.
+
+- Explore raster attributes and metadata using R.
+
+- Import rasters into R using the raster package.
+
+- Plot a raster file in R using the `ggplot2` package.
+
+- Describe the difference between single- and multi-band rasters.
+
+## Things needed to complete this task
+
+See the [lesson homepage](https://datacarpentry.org/r-raster-vector-geospatial/) for detailed information about the software, data, and other prerequisites you will need to work through the examples in this episode.
+
+In this episode, we will introduce the fundamental principles, packages
+and metadata/raster attributes that are needed to work with raster data
+in R. We will discuss some of the core metadata elements that we need
+to understand to work with rasters in R, including CRS and resolution.
+We will also explore missing and bad data values as stored in a raster
+and how R handles these elements.
+
+We will continue to work with the `dplyr` and `ggplot2` packages that were introduced in the
+[Introduction to R for Geospatial Data](https://datacarpentry.org/r-raster-vector-geospatial/)
+lesson. We will use two additional packages in this episode to work with raster data - the `raster` and `rgdal` packages. Make sure that you have these packages loaded.
+
+```{r loadPackages, comment=NA}
+library(dplyr)
+library(raster)
+library(rgdal)
+library(here)
+library(ggplot2)
+```
+
+## Introduce the Data
+
+If not already discussed, introduce the datasets that will be used in this lesson. A brief introduction to the datasets can be found on the [Geospatial workshop homepage](https://datacarpentry.org/geospatial-workshop/).
+
+For more detailed information about the datasets, check out the [Geospatial workshop data page](http://datacarpentry.org/geospatial-workshop/data/).
+
+# View Raster File Attributes
+
+We will be working with a series of GeoTIFF files in this lesson. The
+GeoTIFF format contains a set of embedded tags with metadata about the
+raster data. We can use the function `GDALinfo()` to get information
+about our raster data before we read that data into R. It is ideal to
+do this before importing your data.
+
+```{r checkData}
+fi <- paste0(here(),"/data/tif/HARV_dsmCrop.tif")
+GDALinfo(fi)
+```
+
+```{r captureOutput}
+HARV_dsmCrop_info <- capture.output(GDALinfo(fi))
+```
+
+# Open a raster in R
+
+
+```{r loadRaster}
+DSM_HARV <- raster(fi)
+DSM_HARV
+```
+
+The information above includes a report of min and max values, but no
+other data range statistics. Similar to other R data structures like
+vectors and data frame columns, descriptive statistics for raster data
+can be retrieved like
+
+```{r getSummary}
+summary(DSM_HARV)
+```
+
+Note the warning - unless you force R to calculate these statistics
+using every cell in the raster, it will take a random sample of
+100,000 cells and calculate from that instead. To force calculation
+on more, or even all values, you can use the parameter `maxsamp`:
+
+```{r limitedSummary}
+summary(DSM_HARV, maxsamp = ncell(DSM_HARV))
+```
+
+You may not see major differences in summary stats as `maxsamp` increases, except with very large rasters.
+
+To visualize this data in R using `ggplot2`, we need to convert it
+to a `dataframe`. We learned about dataframes in an earlier lesson.
+The `raster` package has an built-in function for conversion to a
+plotable dataframe.
+
+```{r makeDF}
+DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
+```
+
+Now when we view the structure of our data, we will see a standard
+`dataframe` format.
+
+```{r getStructure}
+str(DSM_HARV_df)
+```
+
+We can use `ggplot()` to plot this data. We will set the color scale
+to `scale_fill_viridis_c` which is a color-blindness friendly color
+scale. We will also use the `coord_quickmap()` function to use an
+approximate Mercator projection for our plots. This approximation is
+suitable for small areas that are not too close to the poles. Other
+coordinate systems are available in `ggplot2` if needed, you can learn
+about them at their help page `?coord_map`.
+
+```{r makeFirstPlot}
+ggplot() +
+    geom_raster(data = DSM_HARV_df ,
+                aes(x = x, y = y,
+                fill = HARV_dsmCrop)) +
+    scale_fill_viridis_c() +
+    coord_quickmap()
+
+```
+
+# More Info
+
+- More information about the Viridis palette used above at R Viridis package [documentation](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html).
+
+- For faster, simpler plots, you can use the `plot` function
+from the `raster` package.
+

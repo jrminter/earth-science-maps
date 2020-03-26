@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # don't heep generate HTML files
 *.html
+
+# don't track pdf file
+Intro-to-Raster-in-R.pdf
