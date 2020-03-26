@@ -70,6 +70,6 @@ cdo sellonlatbox,LON1,LON2,LAT1,LAT2 INAME ONAME
 
 
 
-
+- [Data Carpentry R GDAL example](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html) This plots a GeoTIF Raster file
 
 
